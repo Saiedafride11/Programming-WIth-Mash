@@ -3,133 +3,123 @@ import {
   StyleSheet,
   View,
   Text,
-  ScrollView,
-  RefreshControl,
-  FlatList,
-  SectionList,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 
 const App = () => {
 
-  const [Items, setItems] = useState([
-    { name: 'Item 1' },
-    { name: 'Item 2' },
-    { name: 'Item 3' },
-    { name: 'Item 4' },
-    { name: 'Item 5' },
-    { name: 'Item 6' },
-    { name: 'Item 7' },
-    { name: 'Item 8' },
-    { name: 'Item 9' },
-    { name: 'Item 27' },
-    { name: 'Item 78' },
-  ]);
-  const DATA = [
-    {
-      title: 'Title 1',
-      data: ['Item 1-1', 'Item 1-2', 'Item 1-3'],
-    },
-    {
-      title: 'Title 2',
-      data: ['Item 2-1', 'Item 2-2', 'Item 2-3'],
-    },
-    {
-      title: 'Title 3',
-      data: ['Item 3-1'],
-    },
-    {
-      title: 'Title 4',
-      data: ['Item 4-1', 'Item 4-2'],
-    },
-  ]
-  const [Refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    setItems([...Items, { name: 'Item 69' }]);
-    setRefreshing(false);
+  const [name, SetName] = useState('');
+  const [submitted, SetSubmitted] = useState(false);
+  const onPressHandler = () => {
+    SetSubmitted(!submitted);
   }
 
   return (
-    // ----------------------------------------------------------------
-                          // SectionList
-    // ----------------------------------------------------------------
-    <SectionList
-      keyExtractor={(item, index) => index.toString()}
-      sections={DATA}
-      renderItem={({ item }) => (
-        <Text style={styles.text}>{item}</Text>
-      )}
-      renderSectionHeader={({section})=>(
-        <View style={styles.item}>
-          <Text style={styles.text}>{section.title}</Text>
-        </View>
-      )}
-    />
-    // ----------------------------------------------------------------
-                          // FlatList
-    // ----------------------------------------------------------------
-    // <FlatList
-    //   keyExtractor={(item, index) => index.toString()}
-    //   data={Items}
-    //   renderItem={({ item }) => (
-    //     <View style={styles.item}>
-    //       <Text style={styles.text}>{item.name}</Text>
-    //     </View>
-    //   )}
-    //   refreshControl={
-    //     <RefreshControl
-    //       refreshing={Refreshing}
-    //       onRefresh={onRefresh}
-    //       colors={['#ff00ff']}
-    //     />
-    //   }
-    // />
+    <View style={styles.body}>
+      <Text style={styles.text}>
+        Please write your name:
+      </Text>
+      <TextInput
+        style={styles.input}
+        placeholder='e.g. John'
+        multiline
+        maxLength={5}
+        keyboardType="phone-pad"
+        editable={true || false}
+        onChangeText={(value) => SetName(value)}
+      />
+      {/* <Button
+        title={submitted ? 'Clear' : 'Submit'}
+        onPress={onPressHandler}
+        color='#00f'
+      /> */}
 
-    // ----------------------------------------------------------------
-                          // map
-    // ----------------------------------------------------------------
-    // <ScrollView
-    //   style={styles.body}
-    //   refreshControl={
-    //     <RefreshControl
-    //       refreshing={Refreshing}
-    //       onRefresh={onRefresh}
-    //       colors={['#ff00ff']}
-    //     />
-    //   }
-    // >
-    //   {
-    //     Items.map((object) => {
-    //       return (
-    //         <View style={styles.item} key={object.key}>
-    //           <Text style={styles.text}>{object.item}</Text>
-    //         </View>
-    //       )
-    //     })
-    //   }
-    // </ScrollView>
+      {/* <TouchableOpacity
+        style={styles.button}
+        onPress={onPressHandler}
+        activeOpacity={0.5}
+      >
+          <Text style={styles.text}>
+            {submitted ? 'Clear' : 'Submit'}
+          </Text>
+      </TouchableOpacity> */}
+
+
+      {/* <TouchableHighlight
+        style={styles.button}
+        onPress={onPressHandler}
+        activeOpacity={0.5}
+        underlayColor="#dddddd"
+      >
+          <Text style={styles.text}>
+            {submitted ? 'Clear' : 'Submit'}
+          </Text>
+      </TouchableHighlight> */}
+
+      {/* <TouchableWithoutFeedback
+        onPress={onPressHandler}
+      >
+        <View style={styles.button}>
+          <Text style={styles.text}>
+            {submitted ? 'Clear' : 'Submit'}
+          </Text>
+        </View>
+      </TouchableWithoutFeedback> */}
+
+      <Pressable
+        onPress={onPressHandler}
+        // onLongPress={onPressHandler}
+        hitSlop={{ top: 10, bottom: 10, right: 10, left: 10 }}
+        android_ripple={{color:'#00f'}}
+        style={({ pressed }) => [
+          { backgroundColor: pressed ? '#dddddd' : '#00ff00' },
+          styles.button
+        ]}
+      >
+        <Text style={styles.text}>
+          {submitted ? 'Clear' : 'Submit'}
+        </Text>
+      </Pressable>
+      {submitted ?
+        <Text style={styles.text}>
+          You are registered as {name}
+        </Text>
+        :
+        null
+      }
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   body: {
     flex: 1,
-    flexDirection: 'column',
     backgroundColor: '#ffffff',
-  },
-  item: {
-    margin: 10,
-    backgroundColor: '#4ae1fa',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
     color: '#000000',
-    fontSize: 45,
-    fontStyle: 'italic',
+    fontSize: 20,
     margin: 10,
+  },
+  input: {
+    width: 200,
+    borderWidth: 1,
+    borderColor: '#555',
+    borderRadius: 5,
     textAlign: 'center',
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  button: {
+    width: 150,
+    height: 50,
+    alignItems: 'center',
   },
 });
 
