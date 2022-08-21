@@ -3,23 +3,54 @@ import {
   StyleSheet,
   View,
   Text,
-  Button,
+  ScrollView,
+  RefreshControl,
 } from 'react-native';
 
 const App = () => {
 
+  const [Items, setItems] = useState([
+    { key: 1, item: 'Item 11' },
+    { key: 2, item: 'Item 22' },
+    { key: 3, item: 'Item 33' },
+    { key: 4, item: 'Item 44' },
+    { key: 5, item: 'Item 55' },
+    { key: 6, item: 'Item 66' },
+    { key: 7, item: 'Item 77' },
+    { key: 8, item: 'Item 88' },
+    { key: 9, item: 'Item 99' },
+    { key: 10, item: 'Item 100' },
+    { key: 11, item: 'Item 111' },
+  ]);
+  const [Refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    setItems([...Items, { key: 12, item: 'Item 222' }]);
+    setRefreshing(false);
+  }
+
   return (
-    <View style={styles.body}>
-      <View style={styles.view1}>
-        <Text style={styles.text}>1</Text>
-      </View>
-      <View style={styles.view2}>
-        <Text style={styles.text}>2</Text>
-      </View>
-      <View style={styles.view3}>
-        <Text style={styles.text}>3</Text>
-      </View>
-    </View>
+    <ScrollView
+      style={styles.body}
+      refreshControl={
+        <RefreshControl
+          refreshing={Refreshing}
+          onRefresh={onRefresh}
+          colors={['#ff00ff']}
+        />
+      }
+    >
+      {
+        Items.map((object) => {
+          return (
+            <View style={styles.item} key={object.key}>
+              <Text style={styles.text}>{object.item}</Text>
+            </View>
+          )
+        })
+      }
+    </ScrollView>
   );
 };
 
@@ -27,31 +58,17 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#0000ff',
-    alignItems: 'stretch',
-    justifyContent: 'center',
+    backgroundColor: '#ffffff',
   },
-  view1: {
-    flex: 1,
-    backgroundColor: '#00ffff',
-    alignItems: 'center',
+  item: {
+    margin: 10,
+    backgroundColor: '#4ae1fa',
     justifyContent: 'center',
-  },
-  view2: {
-    flex: 1,
-    backgroundColor: '#ff00ff',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  view3: {
-    flex: 1,
-    backgroundColor: '#ffff00',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   text: {
     color: '#000000',
-    fontSize: 35,
+    fontSize: 45,
     fontStyle: 'italic',
     margin: 10,
   },
