@@ -5,9 +5,9 @@ import {
   Text,
   TextInput,
   Pressable,
-  Alert,
-  ToastAndroid,
-  Modal
+  Modal,
+  Image,
+  ImageBackground,
 } from 'react-native';
 
 const App = () => {
@@ -19,41 +19,24 @@ const App = () => {
     if (name.length > 3) {
       SetSubmitted(!submitted);
     } else {
-      //------------------------------------------------------------------
-                      // ALert
-      //------------------------------------------------------------------
-      // Alert.alert( 'Warning','The name must be longer than 3 characters', [
-      //     { text: 'Do not show again', onPress: () => console.warn('Do not show Pressed!')},
-      //     { text: 'Cancel', onPress: () => console.warn('Cancel Pressed!') },
-      //     { text: 'OK', onPress: () => console.warn('OK Pressed!') },
-      //   ], { cancelable: true, onDismiss: () => console.warn('Alert dismissed!') }
-      // )
-      //------------------------------------------------------------------
-                      //ToastAndroid
-      //------------------------------------------------------------------
-      // ToastAndroid.showWithGravity(
-      //   'The name must be longer than 3 characters',
-      //   ToastAndroid.LONG,
-      //   ToastAndroid.CENTER,
-      // )
-      //------------------------------------------------------------------
-                      //Modal
-      //------------------------------------------------------------------
       SetshowWarning(true);
     }
   }
 
   return (
-    <View style={styles.body}>
-        <Modal
-          visible={showWarning}
-          transparent
-          onRequestClose={() =>
-            SetshowWarning(false)
-          }
-          animationType='slide'
-          hardwareAccelerated
-        >
+    <ImageBackground
+      style={styles.body}
+      source={{ uri: 'https://cdn.pixabay.com/photo/2013/07/12/12/35/texture-145968_960_720.png' }}
+    >
+      <Modal
+        visible={showWarning}
+        transparent
+        onRequestClose={() =>
+          SetshowWarning(false)
+        }
+        animationType='slide'
+        hardwareAccelerated
+      >
         <View style={styles.centered_view}>
           <View style={styles.warning_modal}>
             <View style={styles.warning_title}>
@@ -65,34 +48,25 @@ const App = () => {
             <Pressable
               onPress={() => SetshowWarning(false)}
               style={styles.warning_button}
-              android_ripple={{color:'#fff'}}
+              android_ripple={{ color: '#fff' }}
             >
               <Text style={styles.text}>OK</Text>
             </Pressable>
           </View>
         </View>
       </Modal>
-
-
-
       <Text style={styles.text}>
         Please write your name:
       </Text>
       <TextInput
         style={styles.input}
         placeholder='e.g. John'
-        multiline
-        maxLength={5}
-        keyboardType="phone-pad"
-        editable={true || false}
         onChangeText={(value) => SetName(value)}
       />
       <Pressable
         onPress={onPressHandler}
-        // onLongPress={onPressHandler}
-        // delayLongPress={2000}
         hitSlop={{ top: 10, bottom: 10, right: 10, left: 10 }}
-        android_ripple={{color:'#00f'}}
+        android_ripple={{ color: '#00f' }}
         style={({ pressed }) => [
           { backgroundColor: pressed ? '#dddddd' : '#00ff00' },
           styles.button
@@ -102,27 +76,41 @@ const App = () => {
           {submitted ? 'Clear' : 'Submit'}
         </Text>
       </Pressable>
-      {submitted ?
-        <Text style={styles.text}>
-          You are registered as {name}
-        </Text>
-        :
-        null
+      {
+        submitted ?
+          <View style={styles.body}>
+            <Text style={styles.text}>
+              You are registered as {name}
+            </Text>
+            <Image
+              style={styles.image}
+              // source={require('./assets/done.png')}
+              source={{ uri: 'https://i.ibb.co/f4HQ7GP/done.png' }}
+              resizeMode='stretch'
+              // blurRadius={3}
+            />
+          </View>
+          :
+          <Image
+            style={styles.image}
+            source={{ uri: 'https://cdn.pixabay.com/photo/2018/01/04/15/51/404-error-3060993_960_720.png' }}
+            resizeMode='stretch'
+          />
       }
-    </View>
+    </ImageBackground >
   );
 };
 
 const styles = StyleSheet.create({
   body: {
     flex: 1,
-    backgroundColor: '#ffffff',
     alignItems: 'center',
   },
   text: {
     color: '#000000',
     fontSize: 20,
     margin: 10,
+    textAlign: 'center',
   },
   input: {
     width: 200,
@@ -165,10 +153,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  warning_button:{
-    backgroundColor:'#00ffff',
-    borderBottomLeftRadius:20,
-    borderBottomRightRadius:20,
+  warning_button: {
+    backgroundColor: '#00ffff',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    margin: 10,
   }
 });
 
