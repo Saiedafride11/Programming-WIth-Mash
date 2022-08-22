@@ -26,6 +26,10 @@ function ScreenB({navigation}) {
         // onPress={() => navigation.navigate("ScreenA")}
         // onPress={() => navigation.goBack()}
         onPress={() => navigation.replace("ScreenA")}
+        // onPress={() => navigation.openDrawer()}
+        // onPress={() => navigation.closeDrawer()}
+        // onPress={() => navigation.toggleDrawer()}
+        // onPress={() => navigation.setParams({ itemId: 14})}
         style={({pressed}) => ({backgroundColor: pressed ? "#ddd" : "#0fa"})}
         >
         <Text style={styles.text}>Go Back ScreenA</Text>
@@ -34,7 +38,7 @@ function ScreenB({navigation}) {
   );
 }
 
-export default function App2() {
+export default function Navigation() {
   return (
     //--------------------------------------------------------
     //screenOptions={{headerShown: false}}
