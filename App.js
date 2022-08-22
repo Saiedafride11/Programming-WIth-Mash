@@ -4,23 +4,77 @@ import {
   View,
   Text,
   TextInput,
-  Button,
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableWithoutFeedback,
   Pressable,
+  Alert,
+  ToastAndroid,
+  Modal
 } from 'react-native';
 
 const App = () => {
 
   const [name, SetName] = useState('');
   const [submitted, SetSubmitted] = useState(false);
+  const [showWarning, SetshowWarning] = useState(false);
   const onPressHandler = () => {
-    SetSubmitted(!submitted);
+    if (name.length > 3) {
+      SetSubmitted(!submitted);
+    } else {
+      //------------------------------------------------------------------
+                      // ALert
+      //------------------------------------------------------------------
+      // Alert.alert( 'Warning','The name must be longer than 3 characters', [
+      //     { text: 'Do not show again', onPress: () => console.warn('Do not show Pressed!')},
+      //     { text: 'Cancel', onPress: () => console.warn('Cancel Pressed!') },
+      //     { text: 'OK', onPress: () => console.warn('OK Pressed!') },
+      //   ], { cancelable: true, onDismiss: () => console.warn('Alert dismissed!') }
+      // )
+      //------------------------------------------------------------------
+                      //ToastAndroid
+      //------------------------------------------------------------------
+      // ToastAndroid.showWithGravity(
+      //   'The name must be longer than 3 characters',
+      //   ToastAndroid.LONG,
+      //   ToastAndroid.CENTER,
+      // )
+      //------------------------------------------------------------------
+                      //Modal
+      //------------------------------------------------------------------
+      SetshowWarning(true);
+    }
   }
 
   return (
     <View style={styles.body}>
+        <Modal
+          visible={showWarning}
+          transparent
+          onRequestClose={() =>
+            SetshowWarning(false)
+          }
+          animationType='slide'
+          hardwareAccelerated
+        >
+        <View style={styles.centered_view}>
+          <View style={styles.warning_modal}>
+            <View style={styles.warning_title}>
+              <Text style={styles.text}>WARNING!</Text>
+            </View>
+            <View style={styles.warning_body}>
+              <Text style={styles.text}>The name must be longer than 3 charachters</Text>
+            </View>
+            <Pressable
+              onPress={() => SetshowWarning(false)}
+              style={styles.warning_button}
+              android_ripple={{color:'#fff'}}
+            >
+              <Text style={styles.text}>OK</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+
+
       <Text style={styles.text}>
         Please write your name:
       </Text>
@@ -33,47 +87,10 @@ const App = () => {
         editable={true || false}
         onChangeText={(value) => SetName(value)}
       />
-      {/* <Button
-        title={submitted ? 'Clear' : 'Submit'}
-        onPress={onPressHandler}
-        color='#00f'
-      /> */}
-
-      {/* <TouchableOpacity
-        style={styles.button}
-        onPress={onPressHandler}
-        activeOpacity={0.5}
-      >
-          <Text style={styles.text}>
-            {submitted ? 'Clear' : 'Submit'}
-          </Text>
-      </TouchableOpacity> */}
-
-
-      {/* <TouchableHighlight
-        style={styles.button}
-        onPress={onPressHandler}
-        activeOpacity={0.5}
-        underlayColor="#dddddd"
-      >
-          <Text style={styles.text}>
-            {submitted ? 'Clear' : 'Submit'}
-          </Text>
-      </TouchableHighlight> */}
-
-      {/* <TouchableWithoutFeedback
-        onPress={onPressHandler}
-      >
-        <View style={styles.button}>
-          <Text style={styles.text}>
-            {submitted ? 'Clear' : 'Submit'}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback> */}
-
       <Pressable
         onPress={onPressHandler}
         // onLongPress={onPressHandler}
+        // delayLongPress={2000}
         hitSlop={{ top: 10, bottom: 10, right: 10, left: 10 }}
         android_ripple={{color:'#00f'}}
         style={({ pressed }) => [
@@ -121,6 +138,38 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
   },
+  centered_view: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00000099'
+  },
+  warning_modal: {
+    width: 300,
+    height: 300,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#000',
+    borderRadius: 20,
+  },
+  warning_title: {
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ff0',
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+  },
+  warning_body: {
+    height: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  warning_button:{
+    backgroundColor:'#00ffff',
+    borderBottomLeftRadius:20,
+    borderBottomRightRadius:20,
+  }
 });
 
 export default App;
