@@ -1,17 +1,35 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import NavigationTab from './NavigationTab'
-import Navigation from './Navigation'
-// import NavigationDrawer from './NavigationDrawer'
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
+import Home from './src/screens/Home';
+import Login from './src/screens/Login';
+
+
+const Stack = createNativeStackNavigator();
+
+function App() {
   return (
-    <View>
-      {/* <Navigation/> */}
-      <NavigationTab/>
-      {/* <NavigationDrawer/> */}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Login"
+        screenOptions={{
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#0080ff'
+          },
+          headerTintColor: '#ffffff',
+          headerTitleStyle: {
+            fontSize: 25,
+            fontWeight: 'bold'
+          }
+        }}
+      >
+        <Stack.Screen name="Home" component={Home}/>
+        <Stack.Screen name="Login" component={Login} options={{  headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 
-const styles = StyleSheet.create({})
+export default App;
